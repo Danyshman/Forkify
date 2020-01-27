@@ -7,8 +7,8 @@ Main functionality of website
 3) Add recipe to favorites
 
 Used Technologies
-1)Javascript
-2)Buble
-3)HTML/CSS
-4)Webpack
-5)Nodejs
+1) Javascript
+2) Buble
+3) HTML/CSS
+4) Webpack
+5) Nodejs
