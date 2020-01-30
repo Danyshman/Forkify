@@ -19,10 +19,18 @@ async function controlSearch(event) {
 	if (query) {
 		state.search = new Search(query);
 		searchView.clearInpurt();
-		searchView.clearRecipeList();
 		renderLoader(elements.searchResults);
 		await state.search.getRecipes();
 		clearLoader();
-		searchView.showRecipes(state.search.recipes);
+		searchView.renderResults(state.search.recipes);
 	}
 }
+
+elements.searchResPages.addEventListener('click', event => {
+	const btn = event.target.closest('.btn-inline');
+	if (btn) {
+		const goToPage = parseInt(btn.dataset.goto, 10);
+		searchView.clearRecipeList();
+		searchView.renderResults(state.search.recipes, goToPage);
+	}
+});
