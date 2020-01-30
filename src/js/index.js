@@ -1,5 +1,5 @@
 import Search from './models/Search';
-import elements from './views/base';
+import { elements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchView';
 
 /* Global state of the APP
@@ -20,7 +20,9 @@ async function controlSearch(event) {
 		state.search = new Search(query);
 		searchView.clearInpurt();
 		searchView.clearRecipeList();
+		renderLoader(elements.searchResults);
 		await state.search.getRecipes();
+		clearLoader();
 		searchView.showRecipes(state.search.recipes);
 	}
 }
