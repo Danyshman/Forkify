@@ -12,6 +12,8 @@ export default class List {
 			unit: unit,
 			ingredient: ingredient,
 		};
+		this.items.push(item);
+		return item;
 	}
 
 	deleteItem(id) {
