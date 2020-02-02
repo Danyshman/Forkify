@@ -56,11 +56,13 @@ const renderButtons = (page, numRecipes, resPerPage) => {
     ${createButton(page, 'prev')}
     ${createButton(page, 'next')}
     `;
+	} else if (page === 1 && pages == 1) {
+		button = '';
 	}
 	elements.searchResPages.insertAdjacentHTML('afterbegin', button);
 };
 
-export const renderResults = (recipes, page = 1, resPerPage = 3) => {
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
 	const start = (page - 1) * resPerPage;
 	const end = page * resPerPage;
 	showRecipes(recipes.slice(start, end));
@@ -72,6 +74,6 @@ export const clearRecipeList = () => {
 	elements.searchResPages.innerHTML = '';
 };
 
-export const clearInpurt = () => {
+export const clearInput = () => {
 	elements.searchInput.value = '';
 };

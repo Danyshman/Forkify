@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import { elements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import Recipe from './models/Recipe';
 
 /* Global state of the APP
@@ -20,7 +21,8 @@ async function controlSearch(event) {
 	const query = searchView.getInput();
 	if (query) {
 		state.search = new Search(query);
-		searchView.clearInpurt();
+		searchView.clearInput();
+		searchView.clearRecipeList();
 		renderLoader(elements.searchResults);
 		try {
 			await state.search.getRecipes();
@@ -46,6 +48,8 @@ elements.searchResPages.addEventListener('click', event => {
 const controlRecipe = async () => {
 	const id = window.location.hash.replace('#', '');
 	if (id) {
+		recipeView.clearRecipe();
+		renderLoader(elements.recipe);
 		try {
 			// Prepare UI for changes
 			// Create new recipe object
@@ -54,7 +58,8 @@ const controlRecipe = async () => {
 			await state.recipe.getRecipe();
 			state.recipe.parseIngredients();
 			// Render recipe
-			console.log(state.recipe);
+			clearLoader();
+			recipeView.renderRecipe(state.recipe);
 		} catch (error) {
 			alert(error);
 		}
