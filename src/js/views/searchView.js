@@ -77,3 +77,11 @@ export const clearRecipeList = () => {
 export const clearInput = () => {
 	elements.searchInput.value = '';
 };
+
+export const highlightSelected = id => {
+	const resultsArr = Array.from(document.querySelectorAll('.results_link'));
+	resultsArr.forEach(el => {
+		el.classList.remove('results__link--active');
+	});
+	document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+};
