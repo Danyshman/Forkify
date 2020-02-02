@@ -12,10 +12,13 @@ export default class Recipe {
 			const res = await axios(
 				`${PROXY}https://api.spoonacular.com/recipes/${this.id}/information?apiKey=${API_KEY}&includeNutrition=false`
 			);
-			console.log(res);
+			const summary = await axios(
+				`${PROXY}https://api.spoonacular.com/recipes/${this.id}/summary?apiKey=${API_KEY}&includeNutrition=false/`
+			);
+			this.summary = this.replaceRecipesUrls(summary.data.summary);
 			this.title = res.data.title;
 			this.img = res.data.image;
-			this.author = res.sourceName;
+			this.author = res.data.sourceName;
 			this.url = res.data.sourceUrl;
 			this.ingredients = res.data.extendedIngredients;
 			this.instructions = res.data.analyzedInstructions[0];
@@ -34,12 +37,38 @@ export default class Recipe {
 			let objIng;
 			objIng = {
 				id: el.id,
-				count: el.amount,
+				count: el.amount.toFixed(1),
 				unit: el.measures.us.unitShort,
 				ingredient: el.name,
 			};
 			return objIng;
 		});
 		this.ingredients = newIngredients;
+	}
+
+	replaceRecipesUrls(summary, base_url = 'http://localhost:8080/#') {
+		var start;
+		var end;
+		var i = 0;
+		while (i < summary.length - 5) {
+			if (summary.slice(i, i + 2) === '<a') {
+				start = i;
+				var j = i + 1;
+				while (summary.slice(j, j + 2) !== '">') {
+					j += 1;
+				}
+				end = j;
+				var k = j;
+				var id = '';
+				while ('1234567890'.includes(summary[k - 1])) {
+					id = summary[k] + id;
+					k -= 1;
+				}
+				summary =
+					summary.slice(0, start) + '<a href="' + base_url + id + '>' + summary.slice(j + 2, summary.length);
+			}
+			i += 1;
+		}
+		return summary;
 	}
 }
